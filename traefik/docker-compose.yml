@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+    traefik:
+        image: traefik:v2.4
+        container_name: traefik
+        restart: always
+        ports:
+            - 80:80
+            - 443:443
+        volumes:
+            - ${DOCKER_PATH}:/var/run/docker.sock
+            - ${TRAEFIK_CONFIG_PATH}:/traefik.yml #It can be changed to toml
+            - ${ACME_PATH}:/acme.json
+networks: 
+  default:
+    name: dev 
