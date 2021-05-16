@@ -1,0 +1,35 @@
+kind: pipeline
+type: docker
+name: signIn
+
+clone:
+  disable: true
+
+steps:
+  - name: line-build
+    image: appleboy/drone-ssh
+    settings:
+      host:
+        from_secret: drone_ssh_host
+      user:
+        from_secret: drone_ssh_user
+      port:
+        from_secret: drone_ssh_port
+      key:
+        from_secret: drone_ssh_key
+      script:
+        - cd ~/signIn
+        - git checkout .
+        - git checkout dev
+        - git pull origin dev 
+        - cd line 
+        - docker-compose up -d 
+    when:
+      branch:
+        - dev 
+
+trigger:
+  branch:
+    - dev 
+  event:
+    - push
