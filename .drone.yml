@@ -6,7 +6,7 @@ clone:
   disable: true
 
 steps:
-  - name: line-build
+  - name: sign-build
     image: appleboy/drone-ssh
     settings:
       host:
@@ -22,7 +22,9 @@ steps:
         - git checkout .
         - git checkout dev
         - git pull origin dev 
-        - cd line 
+        - cd frontEnd 
+        - docker-compose up -d 
+        - cd ../line 
         - docker-compose up -d 
     when:
       branch:
