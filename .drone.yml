@@ -21,17 +21,17 @@ steps:
         - cd ~/signIn
         - git checkout .
         - git checkout dev
-        - git pull origin dev 
-        - cd frontEnd 
-        - docker-compose up -d 
-        - cd ../line 
-        - docker-compose up -d 
+        - git pull origin dev
+        - cd gateway
+        - docker-compose up -d --force-recreate
+        - cd ../line
+        - docker-compose up -d --force-recreate
     when:
       branch:
-        - dev 
+        - dev
 
 trigger:
   branch:
-    - dev 
+    - dev
   event:
     - push

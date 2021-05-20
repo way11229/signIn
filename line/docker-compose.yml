@@ -7,10 +7,6 @@ services:
     container_name: signIn_line
     networks:
       - dev 
-    labels:
-      - "traefik.http.routers.line.rule=Host(`${SIGN_IN_LINE_HOST}`)"
-      - "traefik.http.services.line-line.loadbalancer.server.port=80"
-      - "traefik.enable=true"
     working_dir: /service
     volumes:
       - .:/service
