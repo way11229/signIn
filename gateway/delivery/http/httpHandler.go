@@ -1,7 +1,6 @@
 package httpHandler
 
 import (
-	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -28,7 +27,7 @@ func (h *HttpHandler) ShowFrontEnd(c *gin.Context) {
 		log.Fatal(envErr)
 	}
 
-	c.HTML(http.StatusOK, "index.html", gin.H{
-		"baseDomain": os.Getenv("SIGN_IN_GATEWAY_HOST"),
+	c.JSON(200, gin.H{
+		"test": os.Getenv("SIGN_IN_GATEWAY_HOST"),
 	})
 }
