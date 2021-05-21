@@ -18,7 +18,7 @@ func NewHttpHandler(e *gin.Engine) {
 		// SignInWithLineService: serviceList.SignInWithLineService,
 	}
 
-	e.LoadHTMLGlob("../../view/*")
+	e.LoadHTMLGlob("view/*")
 	e.GET("/", handler.ShowFrontEnd)
 }
 
@@ -29,6 +29,6 @@ func (h *HttpHandler) ShowFrontEnd(c *gin.Context) {
 	}
 
 	c.HTML(http.StatusOK, "index.html", gin.H{
-		"template": os.Getenv("SIGN_IN_GATEWAY_HOST"),
+		"baseDomain": os.Getenv("SIGN_IN_GATEWAY_HOST"),
 	})
 }
