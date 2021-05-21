@@ -18,7 +18,7 @@ func NewHttpHandler(e *gin.Engine) {
 		// SignInWithLineService: serviceList.SignInWithLineService,
 	}
 
-	e.LoadHTMLGlob("view/*")
+	e.LoadHTMLGlob("../../view/*")
 	e.GET("/", handler.ShowFrontEnd)
 }
 
