@@ -14,7 +14,7 @@ services:
     working_dir: /service
     volumes:
       - .:/service
-    entrypoint: npm ci | npm run start
+    entrypoint: npm run start
     restart: always
 networks:
   dev:
