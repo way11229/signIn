@@ -23,9 +23,6 @@ const server = createServer((request: IncomingMessage, response: ServerResponse)
             }
             response.end();
         });
-    } else if (request.url === '/test') {
-        response.write(JSON.stringify({ test: '123' }));
-        response.end();
     } else {
         response.writeHead(404);
         response.write('Whoops! File not found!');
@@ -33,4 +30,4 @@ const server = createServer((request: IncomingMessage, response: ServerResponse)
     }
 });
 
-server.listen(5000);
+server.listen(80);
