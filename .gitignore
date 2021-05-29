@@ -1,1 +1,4 @@
 */.env
+
+frontEnd/node_modules
+frontEnd/dist
