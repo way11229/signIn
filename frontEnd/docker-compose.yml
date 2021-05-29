@@ -1,0 +1,21 @@
+
+version: "3.8"
+
+services:
+  gateway:
+    image: node:14.17.0-alpine3.13
+    container_name: signIn_frontEnd
+    networks:
+      - dev
+    labels:
+      - "traefik.http.routers.gateway.rule=Host(`${SIGN_IN_FRONT_END_HOST}`)"
+      - "traefik.http.services.gateway-gateway.loadbalancer.server.port=80"
+      - "traefik.enable=true"
+    working_dir: /service
+    volumes:
+      - .:/service
+    entrypoint: npm ci | npm run start
+    restart: always
+networks:
+  dev:
+    external: true
