@@ -14,10 +14,12 @@
     "@types/node": "^15.6.1"
   },
   "devDependencies": {
+    "@types/lockr": "^0.8.6",
     "axios": "^0.21.1",
     "css-loader": "^5.2.6",
     "dotenv-webpack": "^7.0.2",
     "html-webpack-plugin": "^5.3.1",
+    "lockr": "^0.8.5",
     "node-sass": "^6.0.0",
     "sass-loader": "^11.1.1",
     "style-loader": "^2.0.0",
