@@ -3,7 +3,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 
 const server = createServer((request: IncomingMessage, response: ServerResponse) => {
-    if (request.url === '/') {
+    if ((request.url === '/') || request.url?.includes('/?')) {
         fs.readFile(path.join(__dirname, '/dist/index.html'), 'utf8', (error, data) => {
             if (error) {
                 response.writeHead(404);

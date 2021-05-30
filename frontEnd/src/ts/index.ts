@@ -32,7 +32,7 @@ window.onload = (ev: Event): void => {
     if (state.includes('line')) {
         if (urlParams.has('error')) {
             alert(urlParams.get('error'));
-        } else if (urlParams.has('code') && urlParams.has('state') && urlParams.has('friendship_status_changed')) {
+        } else if (urlParams.has('code') && urlParams.has('state')) {
             if (urlParams.get('state') !== state) {
                 alert('State error');
                 return;
