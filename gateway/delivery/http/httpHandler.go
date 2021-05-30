@@ -2,11 +2,8 @@ package httpHandler
 
 import (
 	"net/http"
-	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
-	log "github.com/sirupsen/logrus"
 )
 
 type HttpHandler struct {
@@ -18,17 +15,16 @@ func NewHttpHandler(e *gin.Engine) {
 		// SignInWithLineService: serviceList.SignInWithLineService,
 	}
 
-	e.LoadHTMLGlob("view/*")
-	e.GET("/", handler.ShowFrontEnd)
+	e.POST("/line", handler.LineSignIn)
 }
 
-func (h *HttpHandler) ShowFrontEnd(c *gin.Context) {
-	envErr := godotenv.Load()
-	if envErr != nil {
-		log.Fatal(envErr)
+func (h *HttpHandler) LineSignIn(c *gin.Context) {
+	verifyCode := c.PostForm("verifyCode")
+	if verifyCode == "" {
+		c.JSON(http.StatusBadRequest, gin.H{})
 	}
 
-	c.HTML(http.StatusOK, "index.html", gin.H{
-		"baseDomain": os.Getenv("SIGN_IN_GATEWAY_HOST"),
+	c.JSON(http.StatusOK, gin.H{
+		"code": verifyCode,
 	})
 }
