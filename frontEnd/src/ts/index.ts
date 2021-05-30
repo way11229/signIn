@@ -12,12 +12,7 @@ if (BtnLine) {
 
         lockr.set('state', state);
 
-        location.href = `https://access.line.me/oauth2/v2.1/authorize?
-        response_type=code&
-        client_id=${process.env.LINE_CLIENT_ID}&
-        redirect_uri=${process.env.LINE_REDIECT_URL}&
-        state=${state}&
-        scope=profile%20openid%20email`;
+        location.href = `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${process.env.LINE_CLIENT_ID}&redirect_uri=${process.env.LINE_REDIECT_URL}&state=${state}&scope=profile%20openid%20email`;
     }
 }
 
