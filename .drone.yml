@@ -19,11 +19,9 @@ steps:
         from_secret: drone_ssh_key
       script:
         - cd ~/signIn
-        - git checkout .
-        - git checkout dev
-        - git pull origin dev
-        # - cd gateway
-        # - docker-compose up -d --force-recreate
+        - git checkout . && git checkout dev && git pull origin dev
+        - docker-compose up -f ./gateway/docker-compose.yml -d --force-recreate
+        - docker-compose up -f ./frontEnd/docker-compose.yml -d --force-recreate
         # - cd ../line
         # - docker-compose up -d --force-recreate
     when:
