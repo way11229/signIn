@@ -20,10 +20,6 @@ func NewHttpHandler(e *gin.Engine) {
 
 func (h *HttpHandler) LineSignIn(c *gin.Context) {
 	verifyCode := c.PostForm("verifyCode")
-	if verifyCode == "" {
-		c.JSON(http.StatusBadRequest, gin.H{})
-	}
-
 	c.JSON(http.StatusOK, gin.H{
 		"code": verifyCode,
 	})
