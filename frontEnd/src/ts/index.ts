@@ -38,9 +38,17 @@ window.onload = (ev: Event): void => {
                 return;
             }
 
-            axios.post(`${process.env.API_BASE_URL}line`, {
-                verifyCode: urlParams.get('code'),
-            }).then((response: object) => {
+            axios.post(
+                `${process.env.API_BASE_URL}line`,
+                {
+                    verifyCode: urlParams.get('code'),
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+                    }
+                }
+            ).then((response: object) => {
                 console.log(response);
             });
         }
