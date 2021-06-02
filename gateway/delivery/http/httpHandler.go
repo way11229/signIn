@@ -24,8 +24,6 @@ func (h *HttpHandler) LineSignIn(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{})
 	}
 
-	c.Header("Access-Control-Allow-Origin", "signin-frontend.selldarity.com")
-	c.Header("Access-Control-Allow-Methods", "POST, GET")
 	c.JSON(http.StatusOK, gin.H{
 		"code": verifyCode,
 	})
