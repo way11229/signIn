@@ -39,7 +39,7 @@ window.onload = (ev: Event): void => {
             }
 
             axios.post(
-                `${process.env.API_BASE_URL}line`,
+                `${process.env.API_BASE_URL}`,
                 {
                     method: 'line',
                     verifyCode: urlParams.get('code'),
