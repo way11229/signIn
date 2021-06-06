@@ -37,7 +37,6 @@ func (h *HttpHandler) Gateway(c *gin.Context) {
 
 	var err error
 	var signInData domain.SignInData
-	message := ""
 
 	switch method {
 	case LINE_METHOD:
@@ -46,12 +45,16 @@ func (h *HttpHandler) Gateway(c *gin.Context) {
 	}
 
 	if err != nil {
-		message = err.Error()
+		message := err.Error()
 		log.Fatal("Sign In error: method:" + method + ",error:" + message)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": message,
+			"result":  domain.SignInData{},
+		})
 	}
 
-	c.JSON(http.StatusBadRequest, gin.H{
-		"message": message,
+	c.JSON(http.StatusOK, gin.H{
+		"message": "",
 		"result":  signInData,
 	})
 }
