@@ -22,8 +22,7 @@ steps:
         - git checkout . && git checkout dev && git pull origin dev
         - docker-compose -f ./gateway/docker-compose.yml --env-file ./gateway/.env up -d --force-recreate
         - docker-compose -f ./frontEnd/docker-compose.yml --env-file ./frontEnd/.env up -d --force-recreate
-        # - cd ../line
-        # - docker-compose up -d --force-recreate
+        - docker-compose -f ./line/docker-compose.yml --env-file ./line/.env up -d --force-recreate
     when:
       branch:
         - dev

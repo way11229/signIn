@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	GRPC_LINE_CONNECT = "line:80"
+	GRPC_LINE_CONNECT = "signIn_line:80"
 )
 
 func main() {
