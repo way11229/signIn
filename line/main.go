@@ -2,13 +2,25 @@ package main
 
 import (
 	"fmt"
-	"net/http"
+	"net"
+
+	"google.golang.org/grpc"
+
+	grpcHandler "signIn/line/delivery/grpc"
 )
 
-func main() {
-	http.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
-		fmt.Fprint(res, "Hello World!")
-	})
+const GRPC_LISTEN_PORT = ":80"
 
-	http.ListenAndServe(":80", nil)
+func main() {
+	lis, err := net.Listen("tcp", GRPC_LISTEN_PORT)
+	if err != nil {
+		fmt.Println("net listen error")
+	}
+
+	s := grpc.NewServer()
+	grpcHandler.New(s)
+
+	if err := s.Serve(lis); err != nil {
+		fmt.Println("grpc server error")
+	}
 }
