@@ -1,6 +1,13 @@
 package domain
 
-import "context"
+import (
+	"context"
+)
+
+type GrpcConn struct {
+	Address string
+	Port    string
+}
 
 type AccessData struct {
 	Token string `json:"token"`
@@ -15,14 +22,24 @@ type SignInData struct {
 	Extra string `json:"extra"`
 }
 
-type SignInServiceList struct {
-	SignInWithLineService SignInWithLineService
+type ServiceList struct {
+	SignInService SignInService
 }
 
-type SignInWithLineService interface {
+type LineResponse struct {
+	AccessToken         string `json:"accessToken"`
+	AccessTokenExpireIn uint8  `json:"accessTokenExpireIn"`
+	RefreshToken        string `json:"refreshToken"`
+	UserId              string `json:"userId"`
+	Name                string `json:"name"`
+	Picture             string `json:"picture"`
+	Email               string `json:"email"`
+}
+
+type SignInService interface {
 	SignInWithLine(context.Context, AccessData) (SignInData, error)
 }
 
-type SignInWithLineRepository interface {
-	SignInWithLine(context.Context, AccessData) (SignInData, error)
+type LineRepository interface {
+	SendSignInRequest(context.Context, AccessData) (LineResponse, error)
 }
