@@ -38,12 +38,12 @@ window.onload = (ev: Event): void => {
                 return;
             }
 
+            const bodyFormData = new FormData();
+            bodyFormData.append('method', 'line');
+            bodyFormData.append('verifyCode', urlParams.get('code') || "");
             axios.post(
                 `${process.env.API_BASE_URL}`,
-                {
-                    method: 'line',
-                    verifyCode: urlParams.get('code'),
-                },
+                bodyFormData,
                 {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
