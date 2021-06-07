@@ -24,19 +24,24 @@ func NewHttpHandler(e *gin.Engine, serviceList domain.ServiceList) {
 }
 
 func (h *HttpHandler) Gateway(c *gin.Context) {
+	var err error
+	var signInData domain.SignInData
+
 	method := c.DefaultPostForm("method", "")
 	verifyCode := c.DefaultPostForm("verifyCode", "")
 	if method == "" || verifyCode == "" {
-		c.JSON(http.StatusBadRequest, gin.H{})
+		log.Warn("Sign In error: method:" + method + ",error: Missing paramters")
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Missing paramters",
+			"result":  signInData,
+		})
+		return
 	}
 
 	accessData := domain.AccessData{
 		Token: verifyCode,
 		Extra: "",
 	}
-
-	var err error
-	var signInData domain.SignInData
 
 	switch method {
 	case LINE_METHOD:
@@ -46,11 +51,12 @@ func (h *HttpHandler) Gateway(c *gin.Context) {
 
 	if err != nil {
 		message := err.Error()
-		log.Fatal("Sign In error: method:" + method + ",error:" + message)
+		log.Warn("Sign In error: method:" + method + ",error:" + message)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": message,
-			"result":  domain.SignInData{},
+			"result":  signInData,
 		})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
