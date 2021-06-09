@@ -6,6 +6,7 @@ import (
 	ps "signIn/gateway/gen/lineSignIn"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/connectivity"
 )
 
 type signInWithLineRepository struct {
@@ -23,7 +24,7 @@ func (slr *signInWithLineRepository) SendSignInRequest(cxt context.Context, acce
 		Extra: accessData.Extra,
 	}
 
-	if slr.grpcLineConnect.GetState().String() == "Shutdown" {
+	if slr.grpcLineConnect.GetState().String() == connectivity.Shutdown.String() {
 		grpcLineConnect, gprcErr := grpc.Dial(slr.grpcLineConnect.Target(), grpc.WithInsecure())
 		if gprcErr != nil {
 			panic(gprcErr)
