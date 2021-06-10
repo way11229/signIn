@@ -4,11 +4,6 @@ import (
 	"context"
 )
 
-type GrpcConn struct {
-	Address string
-	Port    string
-}
-
 type AccessData struct {
 	Token string `json:"token"`
 	Extra string `json:"extra"`
