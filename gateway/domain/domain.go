@@ -23,7 +23,7 @@ type ServiceList struct {
 
 type LineResponse struct {
 	AccessToken         string `json:"accessToken"`
-	AccessTokenExpireIn uint8  `json:"accessTokenExpireIn"`
+	AccessTokenExpireIn uint32 `json:"accessTokenExpireIn"`
 	RefreshToken        string `json:"refreshToken"`
 	UserId              string `json:"userId"`
 	Name                string `json:"name"`
