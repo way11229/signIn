@@ -42,7 +42,7 @@ func (slr *signInWithLineRepository) SendSignInRequest(cxt context.Context, acce
 
 	rtn = domain.LineResponse{
 		AccessToken:         grpcResponse.GetAccessToken(),
-		AccessTokenExpireIn: uint8(grpcResponse.GetAccessTokenExpireIn()),
+		AccessTokenExpireIn: grpcResponse.GetAccessTokenExpireIn(),
 		RefreshToken:        grpcResponse.GetRefreshToken(),
 		UserId:              grpcResponse.GetUserId(),
 		Name:                grpcResponse.GetName(),
