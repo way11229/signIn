@@ -2,10 +2,13 @@ kind: pipeline
 type: docker
 name: signIn
 
-clone:
-  disable: true
-
 steps:
+  - name: test
+    image: golang
+    commands:
+      - cd gateway/
+      - go build
+      - go test
   - name: sign-build
     image: appleboy/drone-ssh
     settings:
