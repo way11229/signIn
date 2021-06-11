@@ -36,6 +36,8 @@ func TestGateway(t *testing.T) {
 		"result":  expectResponseData,
 	})
 
+	r := gin.Default()
+
 	mockSignInService := new(mocks.SignInService)
 	mockSignInService.On(
 		"SignInWithLine",
@@ -43,20 +45,36 @@ func TestGateway(t *testing.T) {
 		accessData,
 	).Return(expectResponseData, nil).Once()
 
-	r := gin.Default()
-
 	handler := httpHandler.HttpHandler{
 		SignInWithLineService: mockSignInService,
 	}
 
 	r.POST("/", handler.Gateway)
 
-	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("POST", "/", strings.NewReader("method=line&verifyCode="+accessData.Token))
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	t.Run("success", func(t *testing.T) {
+		w := httptest.NewRecorder()
+		req, _ := http.NewRequest("POST", "/", strings.NewReader("method=line&verifyCode="+accessData.Token))
+		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
-	r.ServeHTTP(w, req)
+		r.ServeHTTP(w, req)
 
-	assert.Equal(t, 200, w.Code)
-	assert.Equal(t, string(rtnJson), w.Body.String())
+		assert.Equal(t, http.StatusOK, w.Code)
+		assert.Equal(t, string(rtnJson), w.Body.String())
+	})
+
+	t.Run("fail", func(t *testing.T) {
+		w := httptest.NewRecorder()
+		req, _ := http.NewRequest("POST", "/", nil)
+		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+		r.ServeHTTP(w, req)
+
+		badRequestJson, _ := json.Marshal(gin.H{
+			"message": "Missing paramters",
+			"result":  domain.SignInData{},
+		})
+
+		assert.Equal(t, http.StatusBadRequest, w.Code)
+		assert.Equal(t, string(badRequestJson), w.Body.String())
+	})
 }
