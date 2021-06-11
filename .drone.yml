@@ -8,7 +8,7 @@ steps:
     commands:
       - cd gateway/
       - go build
-      - go test
+      - go test ./...
   - name: sign-build
     image: appleboy/drone-ssh
     settings:
