@@ -45,11 +45,7 @@ func TestSignInWithLine(t *testing.T) {
 
 		mockLineRepo.On(
 			"SendSignInRequest",
-			mock.MatchedBy(
-				func(ctx context.Context) bool {
-					return true
-				},
-			),
+			mock.Anything,
 			mock.MatchedBy(
 				func(accessData domain.AccessData) bool {
 					return (accessData.Token == "7G7ovtjlalaCDzWtUVO2") && (accessData.Extra == "")
@@ -71,11 +67,7 @@ func TestSignInWithLine(t *testing.T) {
 
 		mockLineRepo.On(
 			"SendSignInRequest",
-			mock.MatchedBy(
-				func(ctx context.Context) bool {
-					return true
-				},
-			),
+			mock.Anything,
 			mock.MatchedBy(
 				func(accessData domain.AccessData) bool {
 					return (accessData.Token == "7G7ovtjlalaCDzWtUVO2") && (accessData.Extra == "")
