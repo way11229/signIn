@@ -17,10 +17,10 @@ func New(s *grpcLib.Server) {
 	pb.RegisterLineServer(s, handler)
 }
 
-func (g *GrpcHandler) SignIn(cxt context.Context, accessData *pb.AccessData) (*pb.LineResponse, error) {
+func (g *GrpcHandler) SignIn(cxt context.Context, signInData *pb.SignInData) (*pb.LineResponse, error) {
 	rtn := pb.LineResponse{}
-	if accessData.Token == "" {
-		rtn.Error = "Token is missing"
+	if signInData.VerifyCode == "" {
+		rtn.Error = "Verify code is empty"
 		return &rtn, nil
 	}
 

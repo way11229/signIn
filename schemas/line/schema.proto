@@ -5,14 +5,13 @@ option go_package = "./line";
 package line;
 
 service Line {
-  rpc SignIn (AccessData) returns (LineResponse) {}
+  rpc SignIn (signInData) returns (LineResponse) {}
 }
 
 // Request
 
-message AccessData {
-  string token = 1;
-  string extra = 2;
+message signInData {
+  string verifyCode = 1;
 }
 
 // Response

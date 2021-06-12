@@ -19,9 +19,8 @@ func New(cc *grpc.ClientConn) domain.LineRepository {
 
 func (slr *signInWithLineRepository) SendSignInRequest(cxt context.Context, accessData domain.AccessData) (domain.LineResponse, error) {
 	rtn := domain.LineResponse{}
-	requestData := &ps.AccessData{
-		Token: accessData.Token,
-		Extra: accessData.Extra,
+	requestData := &ps.SignInData{
+		VerifyCode: accessData.Token,
 	}
 
 	if slr.grpcLineConnect.GetState().String() == connectivity.Shutdown.String() {
