@@ -12,7 +12,7 @@
   ],
   "paths": {},
   "definitions": {
-    "lineSignInLineResponse": {
+    "lineLineResponse": {
       "type": "object",
       "properties": {
         "accessToken": {

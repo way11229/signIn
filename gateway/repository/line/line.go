@@ -3,7 +3,7 @@ package lineRepository
 import (
 	"context"
 	"signIn/gateway/domain"
-	ps "signIn/gateway/gen/lineSignIn"
+	ps "signIn/gateway/gen/line"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/connectivity"
@@ -34,8 +34,8 @@ func (slr *signInWithLineRepository) SendSignInRequest(cxt context.Context, acce
 		slr.grpcLineConnect = grpcLineConnect
 	}
 
-	lineSIgnInClient := ps.NewLineSignInClient(slr.grpcLineConnect)
-	grpcResponse, err := lineSIgnInClient.Query(cxt, requestData)
+	lineSIgnInClient := ps.NewLineClient(slr.grpcLineConnect)
+	grpcResponse, err := lineSIgnInClient.SignIn(cxt, requestData)
 	if err != nil {
 		return rtn, err
 	}
