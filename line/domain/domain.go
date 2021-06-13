@@ -3,6 +3,7 @@ package domain
 type LineConfig struct {
 	TokenApi     string `json:"tokenApi"`
 	VerifyApi    string `json:"verifyApi"`
+	ProfileApi   string `json:"profileApi"`
 	RedirectUrl  string `json:"redirectUrl"`
 	ClientId     string `json:"clientId"`
 	ClientSecret string `json:"clientSecret"`
@@ -19,7 +20,7 @@ type AccessTokenResponse struct {
 	ErrorDescription string `json:"error_description"`
 }
 
-type UserDataResponse struct {
+type VerifyIdTokenResponse struct {
 	Iss              string   `json:"iss"`
 	Sub              string   `json:"sub"`
 	Aud              string   `json:"aud"`
@@ -34,6 +35,15 @@ type UserDataResponse struct {
 	ErrorDescription string   `json:"error_description"`
 }
 
+type UserProfileResponse struct {
+	UserId           string `json:"userId"`
+	DisplayName      string `json:"displayName"`
+	PictureUrl       string `json:"pictureUrl"`
+	StatusMessage    string `json:"statusMessage"`
+	Error            string `json:"error"`
+	ErrorDescription string `json:"error_description"`
+}
+
 type SignInResponse struct {
 	AccessToken         string `json:"accessToken"`
 	AccessTokenExpireIn uint32 `json:"accessTokenExpireIn"`
@@ -42,6 +52,7 @@ type SignInResponse struct {
 	Name                string `json:"name"`
 	Picture             string `json:"picture"`
 	Email               string `json:"email"`
+	StatusMessage       string `json:"statusMessage"`
 }
 
 type ServiceList struct {
@@ -50,7 +61,8 @@ type ServiceList struct {
 
 type SignInServiceRepositoryList struct {
 	GetAccessTokenRepository GetAccessTokenRepository
-	GetUserDataRepository    GetUserDataRepository
+	VerifyIdTokenRepository  VerifyIdTokenRepository
+	GetUserProfileRepository GetUserProfileRepository
 }
 
 type SignInService interface {
@@ -61,6 +73,10 @@ type GetAccessTokenRepository interface {
 	GetAccessToken(string) (AccessTokenResponse, error)
 }
 
-type GetUserDataRepository interface {
-	GetUserData(string) (UserDataResponse, error)
+type VerifyIdTokenRepository interface {
+	VerifyIdToken(string) (VerifyIdTokenResponse, error)
+}
+
+type GetUserProfileRepository interface {
+	GetUserProfile(string) (UserProfileResponse, error)
 }

@@ -43,6 +43,7 @@ func (g *GrpcHandler) SignIn(cxt context.Context, signInData *pb.SignInData) (*p
 		Name:                signInResponse.Name,
 		Picture:             signInResponse.Picture,
 		Email:               signInResponse.Email,
+		StatusMessage:       signInResponse.StatusMessage,
 		Error:               "",
 	}
 

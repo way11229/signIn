@@ -10,7 +10,8 @@ import (
 	grpcHandler "signIn/line/delivery/grpc"
 	"signIn/line/domain"
 	getAccessTokenRepo "signIn/line/repository/getAccessToken"
-	getUserDataRepo "signIn/line/repository/getUserData"
+	getUserProfileRepo "signIn/line/repository/getUserProfile"
+	verifyIdTokenRepo "signIn/line/repository/verifyIdToken"
 	signInService "signIn/line/service/signIn"
 )
 
@@ -45,6 +46,7 @@ func init() {
 
 	lineConfig.TokenApi = "https://api.line.me/oauth2/v2.1/token"
 	lineConfig.VerifyApi = "https://api.line.me/oauth2/v2.1/verify"
+	lineConfig.ProfileApi = "https://api.line.me/v2/profile"
 }
 
 func main() {
@@ -55,7 +57,8 @@ func main() {
 
 	signInServiceRepositoryList := domain.SignInServiceRepositoryList{
 		GetAccessTokenRepository: getAccessTokenRepo.New(lineConfig),
-		GetUserDataRepository:    getUserDataRepo.New(lineConfig),
+		VerifyIdTokenRepository:  verifyIdTokenRepo.New(lineConfig),
+		GetUserProfileRepository: getUserProfileRepo.New(lineConfig),
 	}
 
 	ServiceList := domain.ServiceList{

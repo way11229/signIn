@@ -6,13 +6,14 @@ import (
 
 type signInService struct {
 	GetAccessTokenRepository domain.GetAccessTokenRepository
-	GetUserDataRepository    domain.GetUserDataRepository
+	VerifyIdTokenRepository  domain.VerifyIdTokenRepository
+	GetUserProfileRepository domain.GetUserProfileRepository
 }
 
 func New(repositoryList domain.SignInServiceRepositoryList) domain.SignInService {
 	return &signInService{
 		GetAccessTokenRepository: repositoryList.GetAccessTokenRepository,
-		GetUserDataRepository:    repositoryList.GetUserDataRepository,
+		GetUserProfileRepository: repositoryList.GetUserProfileRepository,
 	}
 }
 
@@ -24,19 +25,25 @@ func (ss *signInService) SignIn(verifyCode string) (domain.SignInResponse, error
 		return rtn, getAccessTokenErr
 	}
 
-	userData, getUserDataErr := ss.GetUserDataRepository.GetUserData(getAccessTokenResponse.IdToken)
-	if getUserDataErr != nil {
-		return rtn, getUserDataErr
+	verifyIdTokenResponse, verifyIdTokenErr := ss.VerifyIdTokenRepository.VerifyIdToken(getAccessTokenResponse.IdToken)
+	if verifyIdTokenErr != nil {
+		return rtn, verifyIdTokenErr
+	}
+
+	getUserProfileResponse, getUserProfileErr := ss.GetUserProfileRepository.GetUserProfile(getAccessTokenResponse.AccessToken)
+	if getUserProfileErr != nil {
+		return rtn, getUserProfileErr
 	}
 
 	rtn = domain.SignInResponse{
 		AccessToken:         getAccessTokenResponse.AccessToken,
 		AccessTokenExpireIn: getAccessTokenResponse.ExpireIn,
 		RefreshToken:        getAccessTokenResponse.RefreshToken,
-		UserId:              userData.Sub,
-		Name:                userData.Name,
-		Picture:             userData.Picture,
-		Email:               userData.Email,
+		UserId:              getUserProfileResponse.UserId,
+		Name:                getUserProfileResponse.DisplayName,
+		Picture:             getUserProfileResponse.PictureUrl,
+		Email:               verifyIdTokenResponse.Email,
+		StatusMessage:       getUserProfileResponse.StatusMessage,
 	}
 
 	return rtn, nil
