@@ -28,7 +28,13 @@ func (g *getUserDataRepository) GetUserData(idToken string) (domain.UserDataResp
 		return rtn, err
 	}
 
-	json.NewDecoder(response.Body).Decode(&rtn)
+	var responseDecode domain.UserDataResponse
+	decodeErr := json.NewDecoder(response.Body).Decode(&responseDecode)
+	if decodeErr != nil {
+		return rtn, decodeErr
+	}
+
+	rtn = responseDecode
 
 	return rtn, nil
 }

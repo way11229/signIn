@@ -31,7 +31,13 @@ func (g *getAccessTokenRepository) GetAccessToken(verifyCode string) (domain.Acc
 		return rtn, err
 	}
 
-	json.NewDecoder(response.Body).Decode(&rtn)
+	var responseDecode domain.AccessTokenResponse
+	decodeErr := json.NewDecoder(response.Body).Decode(&responseDecode)
+	if decodeErr != nil {
+		return rtn, decodeErr
+	}
+
+	rtn = responseDecode
 
 	return rtn, nil
 }
