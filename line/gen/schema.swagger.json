@@ -37,6 +37,9 @@
         "email": {
           "type": "string"
         },
+        "statusMessage": {
+          "type": "string"
+        },
         "error": {
           "type": "string"
         }

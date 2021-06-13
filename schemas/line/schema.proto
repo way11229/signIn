@@ -24,5 +24,6 @@ message LineResponse {
   string name = 5;
   string picture = 6;
   string email = 7;
-  string error = 8;
+  string statusMessage = 8;
+  string error = 9;
 }
