@@ -29,6 +29,7 @@ type LineResponse struct {
 	Name                string `json:"name"`
 	Picture             string `json:"picture"`
 	Email               string `json:"email"`
+	StatusMessage       string `json:"statusMessage"`
 }
 
 type SignInService interface {

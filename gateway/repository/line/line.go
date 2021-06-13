@@ -52,6 +52,7 @@ func (slr *signInWithLineRepository) SendSignInRequest(cxt context.Context, acce
 		Name:                grpcResponse.GetName(),
 		Picture:             grpcResponse.GetPicture(),
 		Email:               grpcResponse.GetEmail(),
+		StatusMessage:       grpcResponse.GetStatusMessage(),
 	}
 
 	return rtn, nil
