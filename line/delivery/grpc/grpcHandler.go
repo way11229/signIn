@@ -2,6 +2,7 @@ package grpcHandler
 
 import (
 	"context"
+	"errors"
 	"signIn/line/domain"
 	pb "signIn/line/gen/line"
 
@@ -26,13 +27,13 @@ func (g *GrpcHandler) SignIn(cxt context.Context, signInData *pb.SignInData) (*p
 	rtn := pb.LineResponse{}
 	if signInData.VerifyCode == "" {
 		rtn.Error = "Verify code is empty"
-		return &rtn, nil
+		return &rtn, errors.New("Verify code is empty")
 	}
 
 	signInResponse, err := g.SignInService.SignIn(signInData.VerifyCode)
 	if err != nil {
 		rtn.Error = err.Error()
-		return &rtn, nil
+		return &rtn, err
 	}
 
 	rtn = pb.LineResponse{
