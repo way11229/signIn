@@ -2,6 +2,7 @@ package lineRepository
 
 import (
 	"context"
+	"errors"
 	"signIn/gateway/domain"
 	ps "signIn/gateway/gen/line"
 
@@ -37,6 +38,10 @@ func (slr *signInWithLineRepository) SendSignInRequest(cxt context.Context, acce
 	grpcResponse, err := lineSIgnInClient.SignIn(cxt, requestData)
 	if err != nil {
 		return rtn, err
+	}
+
+	if grpcResponse.GetError() != "" {
+		return rtn, errors.New(grpcResponse.GetError())
 	}
 
 	rtn = domain.LineResponse{
