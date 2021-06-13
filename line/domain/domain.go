@@ -9,25 +9,29 @@ type LineConfig struct {
 }
 
 type AccessTokenResponse struct {
-	AccessToken  string `json:"access_token"`
-	ExpireIn     uint32 `json:"expire_in"`
-	IdToken      string `json:"id_token"`
-	RefreshToken string `json:"refresh_token"`
-	Scope        string `json:"scope"`
-	TokenType    string `json:"token_type"`
+	AccessToken      string `json:"access_token"`
+	ExpireIn         uint32 `json:"expire_in"`
+	IdToken          string `json:"id_token"`
+	RefreshToken     string `json:"refresh_token"`
+	Scope            string `json:"scope"`
+	TokenType        string `json:"token_type"`
+	Error            string `json:"error"`
+	ErrorDescription string `json:"error_description"`
 }
 
 type UserDataResponse struct {
-	Iss     string   `json:"iss"`
-	Sub     string   `json:"sub"`
-	Aud     string   `json:"aud"`
-	Exp     uint32   `json:"exp"`
-	Iat     uint32   `json:"iat"`
-	Nonce   string   `json:"nonce"`
-	Amr     []string `json:"amr"`
-	Name    string   `json:"name"`
-	Picture string   `json:"picture"`
-	Email   string   `json:"email"`
+	Iss              string   `json:"iss"`
+	Sub              string   `json:"sub"`
+	Aud              string   `json:"aud"`
+	Exp              uint32   `json:"exp"`
+	Iat              uint32   `json:"iat"`
+	Nonce            string   `json:"nonce"`
+	Amr              []string `json:"amr"`
+	Name             string   `json:"name"`
+	Picture          string   `json:"picture"`
+	Email            string   `json:"email"`
+	Error            string   `json:"error"`
+	ErrorDescription string   `json:"error_description"`
 }
 
 type SignInResponse struct {

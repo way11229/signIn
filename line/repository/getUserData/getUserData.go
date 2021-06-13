@@ -2,6 +2,7 @@ package getUserDataRepository
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"net/url"
 	"signIn/line/domain"
@@ -32,6 +33,10 @@ func (g *getUserDataRepository) GetUserData(idToken string) (domain.UserDataResp
 	decodeErr := json.NewDecoder(response.Body).Decode(&responseDecode)
 	if decodeErr != nil {
 		return rtn, decodeErr
+	}
+
+	if responseDecode.Error != "" {
+		return rtn, errors.New(responseDecode.ErrorDescription)
 	}
 
 	rtn = responseDecode

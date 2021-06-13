@@ -2,6 +2,7 @@ package getAccessTokenRepository
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"net/url"
 	"signIn/line/domain"
@@ -35,6 +36,10 @@ func (g *getAccessTokenRepository) GetAccessToken(verifyCode string) (domain.Acc
 	decodeErr := json.NewDecoder(response.Body).Decode(&responseDecode)
 	if decodeErr != nil {
 		return rtn, decodeErr
+	}
+
+	if responseDecode.Error != "" {
+		return rtn, errors.New(responseDecode.ErrorDescription)
 	}
 
 	rtn = responseDecode
