@@ -29,6 +29,8 @@ func (v *verifyIdTokenRepository) VerifyIdToken(idToken string) (domain.VerifyId
 		return rtn, err
 	}
 
+	defer response.Body.Close()
+
 	var responseDecode domain.VerifyIdTokenResponse
 	decodeErr := json.NewDecoder(response.Body).Decode(&responseDecode)
 	if decodeErr != nil {

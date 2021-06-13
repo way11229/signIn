@@ -31,6 +31,8 @@ func (g *getUserProfileRepository) GetUserProfile(accessToken string) (domain.Us
 		return rtn, responseErr
 	}
 
+	defer response.Body.Close()
+
 	var responseDecode domain.UserProfileResponse
 	decodeErr := json.NewDecoder(response.Body).Decode(&responseDecode)
 	if decodeErr != nil {
