@@ -13,6 +13,7 @@ type signInService struct {
 func New(repositoryList domain.SignInServiceRepositoryList) domain.SignInService {
 	return &signInService{
 		GetAccessTokenRepository: repositoryList.GetAccessTokenRepository,
+		VerifyIdTokenRepository:  repositoryList.VerifyIdTokenRepository,
 		GetUserProfileRepository: repositoryList.GetUserProfileRepository,
 	}
 }
