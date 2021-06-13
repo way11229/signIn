@@ -23,7 +23,7 @@ func (g *getUserProfileRepository) GetUserProfile(accessToken string) (domain.Us
 		return rtn, requstErr
 	}
 
-	request.Header.Set("Bearer", accessToken)
+	request.Header.Set("Authorization", "Bearer "+accessToken)
 
 	client := &http.Client{}
 	response, responseErr := client.Do(request)
