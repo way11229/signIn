@@ -3,10 +3,16 @@ type: docker
 name: signIn
 
 steps:
-  - name: test
+  - name: test-gateway
     image: golang
     commands:
       - cd gateway/
+      - go build
+      - go test ./...
+  - name: test-line
+    image: golang
+    commands:
+      - cd line/
       - go build
       - go test ./...
   - name: sign-build
