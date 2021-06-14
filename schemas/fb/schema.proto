@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+option go_package = "./fb";
+
+package fb;
+
+service fb {
+  rpc SignIn (signInData) returns (FbResponse) {}
+}
+
+// Request
+
+message signInData {
+  string accessToken = 1;
+  string extra = 2;
+}
+
+// Response
+
+message FbResponse {
+  string accessToken = 1;
+  uint32 accessTokenExpireIn = 2;
+  string userId = 3;
+  string name = 4;
+  string picture = 5;
+  string email = 6;
+  string birthday = 8;
+  string error = 9;
+}
