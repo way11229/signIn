@@ -34,7 +34,7 @@ func (ss *signInService) SignIn(accessToken, extra string) (domain.SignInRespons
 		AccessTokenExpireIn: extraDecode.ExpireIn,
 		UserId:              getUserProfileResponse.UserId,
 		Name:                getUserProfileResponse.Name,
-		Picture:             getUserProfileResponse.Picture,
+		Picture:             getUserProfileResponse.Picture.Data.Url,
 		Email:               getUserProfileResponse.Email,
 		Birthday:            getUserProfileResponse.Birthday,
 	}

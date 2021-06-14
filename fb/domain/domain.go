@@ -9,23 +9,30 @@ type GrpcExtraContent struct {
 	ExpireIn uint32 `json:"expireIn"`
 }
 
-type ErrorContent struct {
-	Message   string `json:"message"`
-	Type      string `json:"type"`
-	Code      uint32 `json:"code"`
-	FbTraceId string `json:"fbtrace_id"`
+type ErrorResponse struct {
+	Error struct {
+		Message   string `json:"message"`
+		Type      string `json:"type"`
+		Code      uint32 `json:"code"`
+		FbTraceId string `json:"fbtrace_id"`
+	} `json:"error"`
 }
 
-type ErrorResponse struct {
-	Error ErrorContent `json:"error"`
+type PictureContent struct {
+	Data struct {
+		Height        uint32 `json:"height"`
+		Is_silhouette bool   `json:"is_silhouette"`
+		Url           string `json:"url"`
+		Width         uint32 `json:"width"`
+	} `json:"data"`
 }
 
 type UserProfileResponse struct {
-	UserId   string `json:"id"`
-	Name     string `json:"name"`
-	Picture  string `json:"picture"`
-	Email    string `json:"email"`
-	Birthday string `json:"birthday"`
+	UserId   string         `json:"id"`
+	Name     string         `json:"name"`
+	Picture  PictureContent `json:"picture"`
+	Email    string         `json:"email"`
+	Birthday string         `json:"birthday"`
 }
 
 type SignInResponse struct {
