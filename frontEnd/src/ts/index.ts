@@ -4,10 +4,15 @@ import lockr from 'lockr';
 
 require('../scss/index.scss');
 
+declare global {
+    interface Window { fbAsyncInit: any; }
+}
+
 const BtnLine = document.getElementById('btn-line');
+const BtnFB = document.getElementById('btn-fb');
 
 if (BtnLine) {
-    BtnLine.onclick = function (this: GlobalEventHandlers, ev: MouseEvent): any {
+    BtnLine.onclick = function (this: GlobalEventHandlers, ev: MouseEvent): void {
         const state: string = 'line_' + Date.now();
 
         lockr.set('state', state);
@@ -16,7 +21,48 @@ if (BtnLine) {
     }
 }
 
-window.onload = (ev: Event): void => {
+if (BtnFB) {
+    BtnFB.onclick = function (this: GlobalEventHandlers, ev: MouseEvent): void {
+        FB.login((response: fb.StatusResponse) => {
+            if (response.status === 'connected') {
+                const bodyFormData = new FormData();
+                bodyFormData.append('method', 'fb');
+                bodyFormData.append('verifyCode', response.authResponse.accessToken);
+                bodyFormData.append('extra', JSON.stringify({
+                    expiresIn: response.authResponse.expiresIn,
+                    userId: response.authResponse.userID,
+                }));
+
+                axios.post(
+                    `${process.env.API_BASE_URL}`,
+                    bodyFormData,
+                    {
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+                        }
+                    }
+                ).then((response: object) => {
+                    console.log(response);
+                });
+            } else {
+                alert('fb login error');
+            }
+        }, { scope: 'public_profile,email'});
+    }
+}
+
+function fbInit(): void {
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: process.env.FB_APP_ID,
+            cookie: true,
+            xfbml: true,
+            version: 'v11.0'
+        });
+    };
+}
+
+function lineBasck(): void {
     const queyString: string = window.location.search;
     if (queyString === '') {
         return;
@@ -54,4 +100,9 @@ window.onload = (ev: Event): void => {
             });
         }
     }
+}
+
+window.onload = (ev: Event): void => {
+    fbInit();
+    lineBasck();
 };
