@@ -16,6 +16,7 @@ import (
 
 const (
 	GRPC_LINE_CONNECT = "signIn_line:80"
+	GRPC_FB_CONNECT   = "signIn_fb:80"
 )
 
 func main() {
@@ -25,8 +26,9 @@ func main() {
 	r.Use(cors.CORSMiddleWare())
 
 	lineGRPCConn := mGetLineGRPCConn()
+	fbGRPCConn := mGetFbGRPCConn()
 	lr := lineRepository.New(lineGRPCConn)
-	fr := fbRepository.New(lineGRPCConn)
+	fr := fbRepository.New(fbGRPCConn)
 
 	repositoryList := domain.RepositoryList{
 		LineRepository: lr,
@@ -52,4 +54,16 @@ func mGetLineGRPCConn() *grpc.ClientConn {
 	defer grpcLineConnect.Close()
 
 	return grpcLineConnect
+}
+
+func mGetFbGRPCConn() *grpc.ClientConn {
+	grpcFbConnect, err := grpc.Dial(GRPC_FB_CONNECT, grpc.WithInsecure())
+	if err != nil {
+		log.Fatal("GRPC fb connect error: " + err.Error())
+		panic(err)
+	}
+
+	defer grpcFbConnect.Close()
+
+	return grpcFbConnect
 }
