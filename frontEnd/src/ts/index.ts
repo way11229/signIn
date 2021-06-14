@@ -29,7 +29,7 @@ if (BtnFB) {
                 bodyFormData.append('method', 'fb');
                 bodyFormData.append('verifyCode', response.authResponse.accessToken);
                 bodyFormData.append('extra', JSON.stringify({
-                    expiresIn: response.authResponse.expiresIn,
+                    expireIn: response.authResponse.reauthorize_required_in,
                     userId: response.authResponse.userID,
                 }));
 
