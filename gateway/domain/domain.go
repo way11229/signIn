@@ -34,6 +34,7 @@ type LineResponse struct {
 
 type SignInService interface {
 	SignInWithLine(context.Context, AccessData) (SignInData, error)
+	SignInWithFb(context.Context, AccessData) (SignInData, error)
 }
 
 type LineRepository interface {

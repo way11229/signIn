@@ -34,3 +34,14 @@ func (ss *signInService) SignInWithLine(c context.Context, accessData domain.Acc
 	}
 	return rtn, nil
 }
+
+func (ss *signInService) SignInWithFb(c context.Context, accessData domain.AccessData) (domain.SignInData, error) {
+	rtn := domain.SignInData{
+		ID:    "11223456",
+		Name:  "test",
+		Email: "test",
+		Phone: "",
+		Extra: accessData.Extra,
+	}
+	return rtn, nil
+}

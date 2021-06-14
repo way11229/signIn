@@ -10,14 +10,15 @@ import (
 )
 
 const LINE_METHOD = "line"
+const FB_METHOD = "fb"
 
 type HttpHandler struct {
-	SignInWithLineService domain.SignInService
+	SignInWithService domain.SignInService
 }
 
 func NewHttpHandler(e *gin.Engine, serviceList domain.ServiceList) {
 	handler := &HttpHandler{
-		SignInWithLineService: serviceList.SignInService,
+		SignInWithService: serviceList.SignInService,
 	}
 
 	e.POST("/", handler.Gateway)
@@ -40,13 +41,14 @@ func (h *HttpHandler) Gateway(c *gin.Context) {
 
 	accessData := domain.AccessData{
 		Token: verifyCode,
-		Extra: "",
+		Extra: c.DefaultPostForm("extra", ""),
 	}
 
 	switch method {
 	case LINE_METHOD:
-		signInData, err = h.SignInWithLineService.SignInWithLine(c, accessData)
-		break
+		signInData, err = h.SignInWithService.SignInWithLine(c, accessData)
+	case FB_METHOD:
+		signInData, err = h.SignInWithService.SignInWithFb(c, accessData)
 	}
 
 	if err != nil {
