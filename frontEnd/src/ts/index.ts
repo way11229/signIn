@@ -47,7 +47,7 @@ if (BtnFB) {
             } else {
                 alert('fb login error');
             }
-        }, { scope: 'public_profile,email'});
+        }, { scope: 'public_profile,email,birthday'});
     }
 }
 
