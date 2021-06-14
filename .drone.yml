@@ -32,6 +32,7 @@ steps:
         - docker-compose -f ./gateway/docker-compose.yml --env-file ./gateway/.env up -d --force-recreate
         - docker-compose -f ./frontEnd/docker-compose.yml --env-file ./frontEnd/.env up -d --force-recreate
         - docker-compose -f ./line/docker-compose.yml --env-file ./line/.env up -d --force-recreate
+        - docker-compose -f ./fb/docker-compose.yml --env-file ./fb/.env up -d --force-recreate
     when:
       branch:
         - dev
