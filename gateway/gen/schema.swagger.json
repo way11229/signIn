@@ -12,7 +12,7 @@
   ],
   "paths": {},
   "definitions": {
-    "lineLineResponse": {
+    "fbFbResponse": {
       "type": "object",
       "properties": {
         "accessToken": {
@@ -21,9 +21,6 @@
         "accessTokenExpireIn": {
           "type": "integer",
           "format": "int64"
-        },
-        "refreshToken": {
-          "type": "string"
         },
         "userId": {
           "type": "string"
@@ -37,7 +34,7 @@
         "email": {
           "type": "string"
         },
-        "statusMessage": {
+        "birthday": {
           "type": "string"
         },
         "error": {

@@ -9,6 +9,7 @@ import (
 	cors "signIn/gateway/middleware/cors"
 
 	httpHandler "signIn/gateway/delivery/http"
+	fbRepository "signIn/gateway/repository/fb"
 	lineRepository "signIn/gateway/repository/line"
 	signInService "signIn/gateway/service/signIn"
 )
@@ -25,8 +26,15 @@ func main() {
 
 	lineGRPCConn := mGetLineGRPCConn()
 	lr := lineRepository.New(lineGRPCConn)
+	fr := fbRepository.New(lineGRPCConn)
+
+	repositoryList := domain.RepositoryList{
+		LineRepository: lr,
+		FbRepository:   fr,
+	}
+
 	serviceList := domain.ServiceList{
-		SignInService: signInService.New(lr),
+		SignInService: signInService.New(repositoryList),
 	}
 
 	httpHandler.NewHttpHandler(r, serviceList)

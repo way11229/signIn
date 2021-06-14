@@ -42,6 +42,7 @@ func TestSignInWithLine(t *testing.T) {
 
 	t.Run("success", func(t *testing.T) {
 		mockLineRepo := new(mocks.LineRepository)
+		mockFbRepo := new(mocks.FbRepository)
 
 		mockLineRepo.On(
 			"SendSignInRequest",
@@ -53,7 +54,12 @@ func TestSignInWithLine(t *testing.T) {
 			),
 		).Return(expectLineResponse, nil).Once()
 
-		s := signInService.New(mockLineRepo)
+		repositoryList := domain.RepositoryList{
+			LineRepository: mockLineRepo,
+			FbRepository:   mockFbRepo,
+		}
+
+		s := signInService.New(repositoryList)
 		signInData, err := s.SignInWithLine(ctx, accessData)
 
 		assert.NoError(t, err)
@@ -64,6 +70,7 @@ func TestSignInWithLine(t *testing.T) {
 
 	t.Run("fail", func(t *testing.T) {
 		mockLineRepo := new(mocks.LineRepository)
+		mockFbRepo := new(mocks.FbRepository)
 
 		mockLineRepo.On(
 			"SendSignInRequest",
@@ -75,7 +82,12 @@ func TestSignInWithLine(t *testing.T) {
 			),
 		).Return(domain.LineResponse{}, errors.New("Line sign in Error")).Once()
 
-		s := signInService.New(mockLineRepo)
+		repositoryList := domain.RepositoryList{
+			LineRepository: mockLineRepo,
+			FbRepository:   mockFbRepo,
+		}
+
+		s := signInService.New(repositoryList)
 		signInData, err := s.SignInWithLine(ctx, accessData)
 
 		assert.Error(t, err)

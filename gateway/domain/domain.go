@@ -32,6 +32,21 @@ type LineResponse struct {
 	StatusMessage       string `json:"statusMessage"`
 }
 
+type FbResponse struct {
+	AccessToken         string `json:"accessToken"`
+	AccessTokenExpireIn uint32 `json:"accessTokenExpireIn"`
+	UserId              string `json:"userId"`
+	Name                string `json:"name"`
+	Picture             string `json:"picture"`
+	Email               string `json:"email"`
+	Birthday            string `json:"birthday"`
+}
+
+type RepositoryList struct {
+	LineRepository LineRepository
+	FbRepository   FbRepository
+}
+
 type SignInService interface {
 	SignInWithLine(context.Context, AccessData) (SignInData, error)
 	SignInWithFb(context.Context, AccessData) (SignInData, error)
@@ -39,4 +54,8 @@ type SignInService interface {
 
 type LineRepository interface {
 	SendSignInRequest(context.Context, AccessData) (LineResponse, error)
+}
+
+type FbRepository interface {
+	SendSignInRequest(context.Context, AccessData) (FbResponse, error)
 }

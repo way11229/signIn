@@ -8,10 +8,14 @@ import (
 
 type signInService struct {
 	LineRepository domain.LineRepository
+	FbRepository   domain.FbRepository
 }
 
-func New(lr domain.LineRepository) domain.SignInService {
-	return &signInService{LineRepository: lr}
+func New(repositoryList domain.RepositoryList) domain.SignInService {
+	return &signInService{
+		LineRepository: repositoryList.LineRepository,
+		FbRepository:   repositoryList.FbRepository,
+	}
 }
 
 func (ss *signInService) SignInWithLine(c context.Context, accessData domain.AccessData) (domain.SignInData, error) {
@@ -36,12 +40,23 @@ func (ss *signInService) SignInWithLine(c context.Context, accessData domain.Acc
 }
 
 func (ss *signInService) SignInWithFb(c context.Context, accessData domain.AccessData) (domain.SignInData, error) {
-	rtn := domain.SignInData{
-		ID:    "11223456",
-		Name:  "test",
-		Email: "test",
-		Phone: "",
-		Extra: accessData.Extra,
+	fbResponse, error := ss.FbRepository.SendSignInRequest(c, accessData)
+	if error != nil {
+		return domain.SignInData{}, error
 	}
+
+	extraJson, jsonErr := json.Marshal(fbResponse)
+	if jsonErr != nil {
+		return domain.SignInData{}, jsonErr
+	}
+
+	rtn := domain.SignInData{
+		ID:    fbResponse.UserId,
+		Name:  fbResponse.Name,
+		Email: fbResponse.Email,
+		Phone: "",
+		Extra: string(extraJson),
+	}
+
 	return rtn, nil
 }
