@@ -2,9 +2,9 @@
 version: "3.8"
 
 services:
-  line:
+  fb:
     image: golang:1.15.6-alpine
-    container_name: signIn_line
+    container_name: signIn_fb
     networks:
       - dev
     working_dir: /service
