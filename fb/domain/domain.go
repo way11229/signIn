@@ -18,13 +18,15 @@ type ErrorResponse struct {
 	} `json:"error"`
 }
 
+type PictureContentData struct {
+	Height        uint32 `json:"height"`
+	Is_silhouette bool   `json:"is_silhouette"`
+	Url           string `json:"url"`
+	Width         uint32 `json:"width"`
+}
+
 type PictureContent struct {
-	Data struct {
-		Height        uint32 `json:"height"`
-		Is_silhouette bool   `json:"is_silhouette"`
-		Url           string `json:"url"`
-		Width         uint32 `json:"width"`
-	} `json:"data"`
+	Data PictureContentData `json:"data"`
 }
 
 type UserProfileResponse struct {
