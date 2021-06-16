@@ -15,6 +15,12 @@ steps:
       - cd line/
       - go build
       - go test ./...
+  - name: test-fb
+    image: golang
+    commands:
+      - cd fb/
+      - go build
+      - go test ./...
   - name: sign-build
     image: appleboy/drone-ssh
     settings:
