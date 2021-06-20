@@ -34,7 +34,7 @@ if (BtnGoogle) {
 
         lockr.set('state', state);
 
-        location.href = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${process.env.GOOGLE_APP_ID}&redirect_uri=${process.env.GOOGLE_REDIECT_URL}&state=${state}&scope=openid%20email%20profile`;
+        location.href = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${process.env.GOOGLE_REDIECT_URL}&state=${state}&scope=openid%20email%20profile`;
     }
 }
 
@@ -55,7 +55,6 @@ window.onload = (ev: Event): void => {
         alert(urlParams.get('error'));
         return;
     }
-
 
     if (urlParams.has('code') && urlParams.has('state')) {
         if (urlParams.get('state') !== state) {
