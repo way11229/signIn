@@ -11,14 +11,14 @@ type GetUserProfileRepository struct {
 }
 
 // GetUserProfile provides a mock function with given fields: _a0, _a1
-func (_m *GetUserProfileRepository) GetUserProfile(_a0 string, _a1 string) (domain.UserProfileResponse, error) {
+func (_m *GetUserProfileRepository) GetUserProfile(_a0 string, _a1 string) (domain.GetUserProfileResponse, error) {
 	ret := _m.Called(_a0, _a1)
 
-	var r0 domain.UserProfileResponse
-	if rf, ok := ret.Get(0).(func(string, string) domain.UserProfileResponse); ok {
+	var r0 domain.GetUserProfileResponse
+	if rf, ok := ret.Get(0).(func(string, string) domain.GetUserProfileResponse); ok {
 		r0 = rf(_a0, _a1)
 	} else {
-		r0 = ret.Get(0).(domain.UserProfileResponse)
+		r0 = ret.Get(0).(domain.GetUserProfileResponse)
 	}
 
 	var r1 error

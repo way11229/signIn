@@ -1,37 +1,44 @@
 package signinService
 
 import (
-	"encoding/json"
 	"signIn/fb/domain"
 )
 
 type signInService struct {
+	GetAccessTokenRepository domain.GetAccessTokenRepository
+	VerifyTokenRepository    domain.VerifyTokenRepository
 	GetUserProfileRepository domain.GetUserProfileRepository
 }
 
 func New(repositoryList domain.SignInServiceRepositoryList) domain.SignInService {
 	return &signInService{
+		GetAccessTokenRepository: repositoryList.GetAccessTokenRepository,
+		VerifyTokenRepository:    repositoryList.VerifyTokenRepository,
 		GetUserProfileRepository: repositoryList.GetUserProfileRepository,
 	}
 }
 
-func (ss *signInService) SignIn(accessToken, extra string) (domain.SignInResponse, error) {
-	var extraDecode domain.GrpcExtraContent
+func (ss *signInService) SignIn(verifyCode string) (domain.SignInResponse, error) {
 	rtn := domain.SignInResponse{}
 
-	extraDecodeErr := json.Unmarshal([]byte(extra), &extraDecode)
-	if extraDecodeErr != nil {
-		return rtn, extraDecodeErr
+	getAccessTokenResponse, getAccessTokenErr := ss.GetAccessTokenRepository.GetAccessToken(verifyCode)
+	if getAccessTokenErr != nil {
+		return rtn, getAccessTokenErr
 	}
 
-	getUserProfileResponse, getUserProfileErr := ss.GetUserProfileRepository.GetUserProfile(extraDecode.UserId, accessToken)
+	verifyTokenResponse, verifyTokenErr := ss.VerifyTokenRepository.VerifyToken(verifyCode, getAccessTokenResponse.AccessToken)
+	if verifyTokenErr != nil {
+		return rtn, verifyTokenErr
+	}
+
+	getUserProfileResponse, getUserProfileErr := ss.GetUserProfileRepository.GetUserProfile(verifyTokenResponse.Data.UserId, getAccessTokenResponse.AccessToken)
 	if getUserProfileErr != nil {
 		return rtn, getUserProfileErr
 	}
 
 	rtn = domain.SignInResponse{
-		AccessToken:         accessToken,
-		AccessTokenExpireIn: extraDecode.ExpireIn,
+		AccessToken:         getAccessTokenResponse.AccessToken,
+		AccessTokenExpireIn: getAccessTokenResponse.ExpiresIn,
 		UserId:              getUserProfileResponse.UserId,
 		Name:                getUserProfileResponse.Name,
 		Picture:             getUserProfileResponse.Picture.Data.Url,

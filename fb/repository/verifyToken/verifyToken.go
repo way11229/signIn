@@ -1,4 +1,4 @@
-package getUserProfileRepository
+package verifyToken
 
 import (
 	"encoding/json"
@@ -7,18 +7,18 @@ import (
 	"signIn/fb/domain"
 )
 
-type getUserProfileRepository struct {
+type verifyTokenRepository struct {
 	FbConfig domain.FbConfig
 }
 
-func New(fc domain.FbConfig) domain.GetUserProfileRepository {
-	return &getUserProfileRepository{FbConfig: fc}
+func New(fc domain.FbConfig) domain.VerifyTokenRepository {
+	return &verifyTokenRepository{FbConfig: fc}
 }
 
-func (g *getUserProfileRepository) GetUserProfile(userId, accessToken string) (domain.GetUserProfileResponse, error) {
-	rtn := domain.GetUserProfileResponse{}
+func (g *verifyTokenRepository) VerifyToken(inputToken, accessToken string) (domain.VerifyTokenResponse, error) {
+	rtn := domain.VerifyTokenResponse{}
 
-	requestUrl := g.FbConfig.ProfileApi + userId + "?fields=id,email,name,picture,birthday&access_token=" + accessToken
+	requestUrl := g.FbConfig.VerifyApi + "?input_token=" + inputToken + "&access_token=" + accessToken
 	request, requstErr := http.NewRequest("GET", requestUrl, nil)
 	if requstErr != nil {
 		return rtn, requstErr
@@ -42,7 +42,7 @@ func (g *getUserProfileRepository) GetUserProfile(userId, accessToken string) (d
 		return rtn, errors.New(errorDecode.Error.Message)
 	}
 
-	var responseDecode domain.GetUserProfileResponse
+	var responseDecode domain.VerifyTokenResponse
 	decodeErr := json.NewDecoder(response.Body).Decode(&responseDecode)
 	if decodeErr != nil {
 		return rtn, decodeErr

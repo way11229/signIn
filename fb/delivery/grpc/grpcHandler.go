@@ -25,12 +25,12 @@ func New(s *grpcLib.Server, serviceList domain.ServiceList) {
 
 func (g *GrpcHandler) SignIn(cxt context.Context, signInData *pb.SignInData) (*pb.FbResponse, error) {
 	rtn := pb.FbResponse{}
-	if signInData.AccessToken == "" || signInData.Extra == "" {
+	if signInData.VerifyCode == "" {
 		rtn.Error = "Parameters is empty"
 		return &rtn, errors.New("parameters is empty")
 	}
 
-	signInResponse, err := g.SignInService.SignIn(signInData.AccessToken, signInData.Extra)
+	signInResponse, err := g.SignInService.SignIn(signInData.VerifyCode)
 	if err != nil {
 		rtn.Error = err.Error()
 		return &rtn, err

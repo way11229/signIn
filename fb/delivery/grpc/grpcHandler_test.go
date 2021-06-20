@@ -17,8 +17,7 @@ import (
 func TestSignIn(t *testing.T) {
 	ctx := context.Background()
 	fbSignInData := &pb.SignInData{
-		AccessToken: "123456789",
-		Extra:       `{"userId": "123456789" , "expireIn": 2592000}`,
+		VerifyCode: "123456789",
 	}
 
 	t.Run("success", func(t *testing.T) {
@@ -46,8 +45,7 @@ func TestSignIn(t *testing.T) {
 		mockSignInService := new(mocks.SignInService)
 		mockSignInService.On(
 			"SignIn",
-			fbSignInData.AccessToken,
-			fbSignInData.Extra,
+			fbSignInData.VerifyCode,
 		).Return(expectSignInResponse, nil).Once()
 
 		handler := grpcHandler.GrpcHandler{
@@ -75,8 +73,7 @@ func TestSignIn(t *testing.T) {
 		mockSignInService := new(mocks.SignInService)
 		mockSignInService.On(
 			"SignIn",
-			fbSignInData.AccessToken,
-			fbSignInData.Extra,
+			fbSignInData.VerifyCode,
 		).Return(domain.SignInResponse{}, errors.New("invalid access token")).Once()
 
 		handler := grpcHandler.GrpcHandler{

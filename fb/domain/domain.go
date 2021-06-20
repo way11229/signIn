@@ -1,12 +1,12 @@
 package domain
 
 type FbConfig struct {
-	GraphApi string `json:"graphApi"`
-}
-
-type GrpcExtraContent struct {
-	UserId   string `json:"userId"`
-	ExpireIn uint32 `json:"expireIn"`
+	TokenApi     string `json:"tokenApi"`
+	VerifyApi    string `json:"verifyApi"`
+	ProfileApi   string `json:"profileApi"`
+	RedirectUrl  string `json:"redirectUrl"`
+	ClientId     string `json:"clientId"`
+	ClientSecret string `json:"clientSecret"`
 }
 
 type ErrorResponse struct {
@@ -18,18 +18,38 @@ type ErrorResponse struct {
 	} `json:"error"`
 }
 
-type PictureContentData struct {
-	Height        uint32 `json:"height"`
-	Is_silhouette bool   `json:"is_silhouette"`
-	Url           string `json:"url"`
-	Width         uint32 `json:"width"`
+type GetAccessTokenResponse struct {
+	AccessToken string `json:"access_token"`
+	TokenType   string `json:"token_type"`
+	ExpiresIn   uint32 `json:"expires_in"`
+}
+
+type VerifyTokenResponse struct {
+	Data struct {
+		AppId       uint64 `json:"app_id"`
+		Type        string `json:"type"`
+		Application string `json:"application"`
+		ExpiresAt   uint32 `json:"expires_at"`
+		IsValid     bool   `json:"isValid"`
+		IssuedAt    uint32 `json:"issue_at"`
+		Metadata    struct {
+			Sso string `json:"sso"`
+		} `json:"metadata"`
+		Scopes []string `json:"scopes"`
+		UserId string   `json:"user_id"`
+	} `json:"data"`
 }
 
 type PictureContent struct {
-	Data PictureContentData `json:"data"`
+	Data struct {
+		Height        uint32 `json:"height"`
+		Is_silhouette bool   `json:"is_silhouette"`
+		Url           string `json:"url"`
+		Width         uint32 `json:"width"`
+	} `json:"data"`
 }
 
-type UserProfileResponse struct {
+type GetUserProfileResponse struct {
 	UserId   string         `json:"id"`
 	Name     string         `json:"name"`
 	Picture  PictureContent `json:"picture"`
@@ -52,13 +72,22 @@ type ServiceList struct {
 }
 
 type SignInServiceRepositoryList struct {
+	GetAccessTokenRepository GetAccessTokenRepository
+	VerifyTokenRepository    VerifyTokenRepository
 	GetUserProfileRepository GetUserProfileRepository
 }
 
 type SignInService interface {
-	SignIn(string, string) (SignInResponse, error)
+	SignIn(string) (SignInResponse, error)
 }
 
+type GetAccessTokenRepository interface {
+	GetAccessToken(string) (GetAccessTokenResponse, error)
+}
+
+type VerifyTokenRepository interface {
+	VerifyToken(string, string) (VerifyTokenResponse, error)
+}
 type GetUserProfileRepository interface {
-	GetUserProfile(string, string) (UserProfileResponse, error)
+	GetUserProfile(string, string) (GetUserProfileResponse, error)
 }
