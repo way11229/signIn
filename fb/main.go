@@ -44,9 +44,9 @@ func init() {
 		panic("fb client secret is empty")
 	}
 
-	fbConfig.TokenApi = "https://graph.facebook.com/v11.0/oauth/access_token/"
-	fbConfig.VerifyApi = "https://graph.facebook.com/debug_token/"
-	fbConfig.ProfileApi = "https://graph.facebook.com/"
+	fbConfig.TokenApi = "https://graph.facebook.com/v11.0/oauth/access_token"
+	fbConfig.VerifyApi = "https://graph.facebook.com/debug_token"
+	fbConfig.ProfileApi = "https://graph.facebook.com"
 }
 
 func main() {
