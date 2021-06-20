@@ -4,10 +4,6 @@ import lockr from 'lockr';
 
 require('../scss/index.scss');
 
-declare global {
-    interface Window { fbAsyncInit: any; }
-}
-
 const BtnLine = document.getElementById('btn-line');
 const BtnFB = document.getElementById('btn-fb');
 
@@ -23,46 +19,15 @@ if (BtnLine) {
 
 if (BtnFB) {
     BtnFB.onclick = function (this: GlobalEventHandlers, ev: MouseEvent): void {
-        FB.login((response: fb.StatusResponse) => {
-            if (response.status === 'connected') {
-                const bodyFormData = new FormData();
-                bodyFormData.append('method', 'fb');
-                bodyFormData.append('verifyCode', response.authResponse.accessToken);
-                bodyFormData.append('extra', JSON.stringify({
-                    expireIn: response.authResponse.reauthorize_required_in,
-                    userId: response.authResponse.userID,
-                }));
+        const state: string = 'fb_' + Date.now();
 
-                axios.post(
-                    `${process.env.API_BASE_URL}`,
-                    bodyFormData,
-                    {
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-                        }
-                    }
-                ).then((response: object) => {
-                    console.log(response);
-                });
-            } else {
-                alert('fb login error');
-            }
-        }, { scope: 'public_profile,email,user_birthday'});
+        lockr.set('state', state);
+
+        location.href = `https://www.facebook.com/v11.0/dialog/oauth?response_type=code&client_id=${process.env.FB_APP_ID}&redirect_uri=${process.env.FB_REDIECT_URL}&state=${state}&scope=public_profile,email,user_birthday`;
     }
 }
 
-function fbInit(): void {
-    window.fbAsyncInit = function () {
-        FB.init({
-            appId: process.env.FB_APP_ID,
-            cookie: true,
-            xfbml: true,
-            version: 'v11.0'
-        });
-    };
-}
-
-function lineBasck(): void {
+window.onload = (ev: Event): void => {
     const queyString: string = window.location.search;
     if (queyString === '') {
         return;
@@ -99,10 +64,29 @@ function lineBasck(): void {
                 console.log(response);
             });
         }
-    }
-}
+    } else if (state.includes('fb')) {
+        if (urlParams.has('error')) {
+            alert(urlParams.get('error'));
+        } else if (urlParams.has('code') && urlParams.has('state')) {
+            if (urlParams.get('state') !== state) {
+                alert('State error');
+                return;
+            }
 
-window.onload = (ev: Event): void => {
-    fbInit();
-    lineBasck();
+            const bodyFormData = new FormData();
+            bodyFormData.append('method', 'fb');
+            bodyFormData.append('verifyCode', urlParams.get('code') || "");
+            axios.post(
+                `${process.env.API_BASE_URL}`,
+                bodyFormData,
+                {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+                    }
+                }
+            ).then((response: object) => {
+                console.log(response);
+            });
+        }
+    }
 };
