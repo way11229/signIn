@@ -21,8 +21,7 @@ func New(cc *grpc.ClientConn) domain.FbRepository {
 func (slr *signInWithFbRepository) SendSignInRequest(cxt context.Context, accessData domain.AccessData) (domain.FbResponse, error) {
 	rtn := domain.FbResponse{}
 	requestData := &ps.SignInData{
-		AccessToken: accessData.Token,
-		Extra:       accessData.Extra,
+		VerifyCode: accessData.Token,
 	}
 
 	if slr.grpcFbConnect.GetState().String() == connectivity.Shutdown.String() {

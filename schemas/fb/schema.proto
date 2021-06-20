@@ -11,8 +11,7 @@ service fb {
 // Request
 
 message signInData {
-  string accessToken = 1;
-  string extra = 2;
+  string verifyCode = 1;
 }
 
 // Response
