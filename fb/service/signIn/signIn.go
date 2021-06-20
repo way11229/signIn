@@ -26,7 +26,7 @@ func (ss *signInService) SignIn(verifyCode string) (domain.SignInResponse, error
 		return rtn, getAccessTokenErr
 	}
 
-	verifyTokenResponse, verifyTokenErr := ss.VerifyTokenRepository.VerifyToken(verifyCode, getAccessTokenResponse.AccessToken)
+	verifyTokenResponse, verifyTokenErr := ss.VerifyTokenRepository.VerifyToken(getAccessTokenResponse.AccessToken)
 	if verifyTokenErr != nil {
 		return rtn, verifyTokenErr
 	}

@@ -18,7 +18,7 @@ func New(fc domain.FbConfig) domain.GetUserProfileRepository {
 func (g *getUserProfileRepository) GetUserProfile(userId, accessToken string) (domain.GetUserProfileResponse, error) {
 	rtn := domain.GetUserProfileResponse{}
 
-	requestUrl := g.FbConfig.ProfileApi + userId + "?fields=id,email,name,picture,birthday&access_token=" + accessToken
+	requestUrl := g.FbConfig.GraphApi + userId + "?fields=id,email,name,picture,birthday&access_token=" + accessToken
 	request, requstErr := http.NewRequest("GET", requestUrl, nil)
 	if requstErr != nil {
 		return rtn, requstErr

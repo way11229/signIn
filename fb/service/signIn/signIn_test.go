@@ -89,7 +89,6 @@ func TestSignIn(t *testing.T) {
 
 	mockVerifyTokenRepo.On(
 		"VerifyToken",
-		verifyCode,
 		getAccessTokenResponse.AccessToken,
 	).Return(verifyTokenResponse, nil).Times(2)
 
@@ -162,7 +161,6 @@ func TestSignIn(t *testing.T) {
 
 		mockFailVerifyIdTokenRepo.On(
 			"VerifyToken",
-			verifyCode,
 			getAccessTokenResponse.AccessToken,
 		).Return(verifyIdTokenResponseErr, errors.New("invalid id token")).Once()
 

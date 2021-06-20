@@ -15,10 +15,10 @@ func New(fc domain.FbConfig) domain.VerifyTokenRepository {
 	return &verifyTokenRepository{FbConfig: fc}
 }
 
-func (g *verifyTokenRepository) VerifyToken(inputToken, accessToken string) (domain.VerifyTokenResponse, error) {
+func (g *verifyTokenRepository) VerifyToken(accessToken string) (domain.VerifyTokenResponse, error) {
 	rtn := domain.VerifyTokenResponse{}
 
-	requestUrl := g.FbConfig.VerifyApi + "?input_token=" + inputToken + "&access_token=" + accessToken
+	requestUrl := g.FbConfig.VerifyApi + "?input_token=" + accessToken + "&access_token=" + accessToken
 	request, requstErr := http.NewRequest("GET", requestUrl, nil)
 	if requstErr != nil {
 		return rtn, requstErr

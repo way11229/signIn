@@ -10,20 +10,20 @@ type VerifyTokenRepository struct {
 	mock.Mock
 }
 
-// VerifyToken provides a mock function with given fields: _a0, _a1
-func (_m *VerifyTokenRepository) VerifyToken(_a0 string, _a1 string) (domain.VerifyTokenResponse, error) {
-	ret := _m.Called(_a0, _a1)
+// VerifyToken provides a mock function with given fields: _a0
+func (_m *VerifyTokenRepository) VerifyToken(_a0 string) (domain.VerifyTokenResponse, error) {
+	ret := _m.Called(_a0)
 
 	var r0 domain.VerifyTokenResponse
-	if rf, ok := ret.Get(0).(func(string, string) domain.VerifyTokenResponse); ok {
-		r0 = rf(_a0, _a1)
+	if rf, ok := ret.Get(0).(func(string) domain.VerifyTokenResponse); ok {
+		r0 = rf(_a0)
 	} else {
 		r0 = ret.Get(0).(domain.VerifyTokenResponse)
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(string, string) error); ok {
-		r1 = rf(_a0, _a1)
+	if rf, ok := ret.Get(1).(func(string) error); ok {
+		r1 = rf(_a0)
 	} else {
 		r1 = ret.Error(1)
 	}

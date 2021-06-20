@@ -3,7 +3,7 @@ package domain
 type FbConfig struct {
 	TokenApi     string `json:"tokenApi"`
 	VerifyApi    string `json:"verifyApi"`
-	ProfileApi   string `json:"profileApi"`
+	GraphApi     string `json:"graphApi"`
 	RedirectUrl  string `json:"redirectUrl"`
 	ClientId     string `json:"clientId"`
 	ClientSecret string `json:"clientSecret"`
@@ -86,7 +86,7 @@ type GetAccessTokenRepository interface {
 }
 
 type VerifyTokenRepository interface {
-	VerifyToken(string, string) (VerifyTokenResponse, error)
+	VerifyToken(string) (VerifyTokenResponse, error)
 }
 type GetUserProfileRepository interface {
 	GetUserProfile(string, string) (GetUserProfileResponse, error)
