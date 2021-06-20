@@ -18,7 +18,7 @@ func New(fc domain.FbConfig) domain.GetAccessTokenRepository {
 func (g *getAccessTokenRepository) GetAccessToken(code string) (domain.GetAccessTokenResponse, error) {
 	rtn := domain.GetAccessTokenResponse{}
 
-	requestUrl := g.FbConfig.TokenApi + "?client_id=" + g.FbConfig.ClientId + "&redirect_uri=" + g.FbConfig.RedirectUrl + "&client_secret=" + g.FbConfig.ClientSecret + "&code=" + code
+	requestUrl := g.FbConfig.TokenApi + "?client_id=" + g.FbConfig.ClientId + "&redirect_uri=" + g.FbConfig.RedirectUrl + "&code=" + code
 	request, requstErr := http.NewRequest("GET", requestUrl, nil)
 	if requstErr != nil {
 		return rtn, requstErr
