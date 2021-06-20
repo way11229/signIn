@@ -32,7 +32,7 @@ func TestSignIn(t *testing.T) {
 
 	verifyTokenResponse := domain.VerifyTokenResponse{
 		Data: struct {
-			AppId       uint64 "json:\"app_id\""
+			AppId       string "json:\"app_id\""
 			Type        string "json:\"type\""
 			Application string "json:\"application\""
 			ExpiresAt   uint32 "json:\"expires_at\""
@@ -44,7 +44,7 @@ func TestSignIn(t *testing.T) {
 			Scopes []string "json:\"scopes\""
 			UserId string   "json:\"user_id\""
 		}{
-			AppId:       138483919580948,
+			AppId:       "138483919580948",
 			Type:        "USER",
 			Application: "test",
 			ExpiresAt:   1352419328,
@@ -145,7 +145,7 @@ func TestSignIn(t *testing.T) {
 
 		verifyIdTokenResponseErr := domain.VerifyTokenResponse{
 			Data: struct {
-				AppId       uint64 "json:\"app_id\""
+				AppId       string "json:\"app_id\""
 				Type        string "json:\"type\""
 				Application string "json:\"application\""
 				ExpiresAt   uint32 "json:\"expires_at\""

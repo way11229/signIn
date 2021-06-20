@@ -26,7 +26,7 @@ type GetAccessTokenResponse struct {
 
 type VerifyTokenResponse struct {
 	Data struct {
-		AppId       uint64 `json:"app_id"`
+		AppId       string `json:"app_id"`
 		Type        string `json:"type"`
 		Application string `json:"application"`
 		ExpiresAt   uint32 `json:"expires_at"`
