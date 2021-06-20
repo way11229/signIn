@@ -1,26 +1,50 @@
 kind: pipeline
 type: docker
-name: signIn
+name: test-gateway
 
 steps:
-  - name: test-gateway
+  - name: test
     image: golang
     commands:
       - cd gateway/
       - go build
       - go test ./...
-  - name: test-line
+
+---
+
+kind: pipeline
+type: docker
+name: test-line
+
+steps:
+  - name: test
     image: golang
     commands:
       - cd line/
       - go build
       - go test ./...
-  - name: test-fb
+
+---
+
+kind: pipeline
+type: docker
+name: test-fb
+
+steps:
+  - name: test
     image: golang
     commands:
       - cd fb/
       - go build
       - go test ./...
+
+---
+
+kind: pipeline
+type: docker
+name: signIn
+
+steps:
   - name: sign-build
     image: appleboy/drone-ssh
     settings:
@@ -42,6 +66,11 @@ steps:
     when:
       branch:
         - dev
+
+depends_on:
+  - test-gateway
+  - test-line
+  - test-fb
 
 trigger:
   branch:
