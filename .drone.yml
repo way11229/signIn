@@ -45,6 +45,9 @@ kind: pipeline
 type: docker
 name: signIn
 
+clone:
+  disable: true
+
 steps:
   - name: sign-build
     image: appleboy/drone-ssh
@@ -64,6 +67,7 @@ steps:
         - docker-compose -f ./frontEnd/docker-compose.yml --env-file ./frontEnd/.env up -d --force-recreate
         - docker-compose -f ./line/docker-compose.yml --env-file ./line/.env up -d --force-recreate
         - docker-compose -f ./fb/docker-compose.yml --env-file ./fb/.env up -d --force-recreate
+        - docker-compose -f ./google/docker-compose.yml --env-file ./google/.env up -d --force-recreate
     when:
       branch:
         - dev
