@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option go_package = "./google";
+
+package google;
+
+service google {
+  rpc SignIn (signInData) returns (GoogleResponse) {}
+}
+
+// Request
+
+message signInData {
+  string verifyCode = 1;
+}
+
+// Response
+
+message GoogleResponse {
+  string accessToken = 1;
+  uint32 accessTokenExpireIn = 2;
+  string refreshToken = 3;
+  string userId = 4;
+  string name = 5;
+  string picture = 6;
+  string email = 7;
+  string error = 8;
+}
