@@ -9,14 +9,18 @@ import (
 	cors "signIn/gateway/middleware/cors"
 
 	httpHandler "signIn/gateway/delivery/http"
-	fbRepository "signIn/gateway/repository/fb"
-	lineRepository "signIn/gateway/repository/line"
+
 	signInService "signIn/gateway/service/signIn"
+
+	fbRepository "signIn/gateway/repository/fb"
+	googleRepository "signIn/gateway/repository/google"
+	lineRepository "signIn/gateway/repository/line"
 )
 
 const (
-	GRPC_LINE_CONNECT = "signIn_line:80"
-	GRPC_FB_CONNECT   = "signIn_fb:80"
+	GRPC_LINE_CONNECT   = "signIn_line:80"
+	GRPC_FB_CONNECT     = "signIn_fb:80"
+	GRPC_GOOGLE_CONNECT = "signIn_google:80"
 )
 
 func main() {
@@ -27,12 +31,15 @@ func main() {
 
 	lineGRPCConn := mGetLineGRPCConn()
 	fbGRPCConn := mGetFbGRPCConn()
+	googleGRPCConn := mGetGoogleGRPCConn()
 	lr := lineRepository.New(lineGRPCConn)
 	fr := fbRepository.New(fbGRPCConn)
+	gr := googleRepository.New(googleGRPCConn)
 
 	repositoryList := domain.RepositoryList{
-		LineRepository: lr,
-		FbRepository:   fr,
+		LineRepository:   lr,
+		FbRepository:     fr,
+		GoogleRepository: gr,
 	}
 
 	serviceList := domain.ServiceList{
@@ -66,4 +73,16 @@ func mGetFbGRPCConn() *grpc.ClientConn {
 	defer grpcFbConnect.Close()
 
 	return grpcFbConnect
+}
+
+func mGetGoogleGRPCConn() *grpc.ClientConn {
+	grpcGoogleConnect, err := grpc.Dial(GRPC_GOOGLE_CONNECT, grpc.WithInsecure())
+	if err != nil {
+		log.Fatal("GRPC google connect error: " + err.Error())
+		panic(err)
+	}
+
+	defer grpcGoogleConnect.Close()
+
+	return grpcGoogleConnect
 }

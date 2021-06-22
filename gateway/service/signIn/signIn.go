@@ -7,14 +7,16 @@ import (
 )
 
 type signInService struct {
-	LineRepository domain.LineRepository
-	FbRepository   domain.FbRepository
+	LineRepository   domain.LineRepository
+	FbRepository     domain.FbRepository
+	GoogleRepository domain.GoogleRepository
 }
 
 func New(repositoryList domain.RepositoryList) domain.SignInService {
 	return &signInService{
-		LineRepository: repositoryList.LineRepository,
-		FbRepository:   repositoryList.FbRepository,
+		LineRepository:   repositoryList.LineRepository,
+		FbRepository:     repositoryList.FbRepository,
+		GoogleRepository: repositoryList.GoogleRepository,
 	}
 }
 
@@ -54,6 +56,28 @@ func (ss *signInService) SignInWithFb(c context.Context, accessData domain.Acces
 		ID:    fbResponse.UserId,
 		Name:  fbResponse.Name,
 		Email: fbResponse.Email,
+		Phone: "",
+		Extra: string(extraJson),
+	}
+
+	return rtn, nil
+}
+
+func (ss *signInService) SignInWithGoogle(c context.Context, accessData domain.AccessData) (domain.SignInData, error) {
+	googleResponse, error := ss.GoogleRepository.SendSignInRequest(c, accessData)
+	if error != nil {
+		return domain.SignInData{}, error
+	}
+
+	extraJson, jsonErr := json.Marshal(googleResponse)
+	if jsonErr != nil {
+		return domain.SignInData{}, jsonErr
+	}
+
+	rtn := domain.SignInData{
+		ID:    googleResponse.UserId,
+		Name:  googleResponse.Name,
+		Email: googleResponse.Email,
 		Phone: "",
 		Extra: string(extraJson),
 	}

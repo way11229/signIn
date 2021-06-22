@@ -11,6 +11,7 @@ import (
 
 const LINE_METHOD = "line"
 const FB_METHOD = "fb"
+const GOOGLE_METHOD = "google"
 
 type HttpHandler struct {
 	SignInWithService domain.SignInService
@@ -49,6 +50,8 @@ func (h *HttpHandler) Gateway(c *gin.Context) {
 		signInData, err = h.SignInWithService.SignInWithLine(c, accessData)
 	case FB_METHOD:
 		signInData, err = h.SignInWithService.SignInWithFb(c, accessData)
+	case GOOGLE_METHOD:
+		signInData, err = h.SignInWithService.SignInWithGoogle(c, accessData)
 	}
 
 	if err != nil {

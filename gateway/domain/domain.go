@@ -42,14 +42,26 @@ type FbResponse struct {
 	Birthday            string `json:"birthday"`
 }
 
+type GoogleResponse struct {
+	AccessToken         string `json:"accessToken"`
+	AccessTokenExpireIn uint32 `json:"accessTokenExpireIn"`
+	RefreshToken        string `json:"refreshToken"`
+	UserId              string `json:"userId"`
+	Name                string `json:"name"`
+	Picture             string `json:"picture"`
+	Email               string `json:"email"`
+}
+
 type RepositoryList struct {
-	LineRepository LineRepository
-	FbRepository   FbRepository
+	LineRepository   LineRepository
+	FbRepository     FbRepository
+	GoogleRepository GoogleRepository
 }
 
 type SignInService interface {
 	SignInWithLine(context.Context, AccessData) (SignInData, error)
 	SignInWithFb(context.Context, AccessData) (SignInData, error)
+	SignInWithGoogle(context.Context, AccessData) (SignInData, error)
 }
 
 type LineRepository interface {
@@ -58,4 +70,8 @@ type LineRepository interface {
 
 type FbRepository interface {
 	SendSignInRequest(context.Context, AccessData) (FbResponse, error)
+}
+
+type GoogleRepository interface {
+	SendSignInRequest(context.Context, AccessData) (GoogleResponse, error)
 }
