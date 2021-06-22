@@ -38,6 +38,19 @@ steps:
       - cd fb/
       - go build
       - go test ./...
+---
+
+kind: pipeline
+type: docker
+name: test-google
+
+steps:
+  - name: test
+    image: golang
+    commands:
+      - cd google/
+      - go build
+      - go test ./...
 
 ---
 
