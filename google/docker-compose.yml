@@ -1,0 +1,17 @@
+
+version: "3.8"
+
+services:
+  google:
+    image: golang:1.15.6-alpine
+    container_name: signIn_google
+    networks:
+      - dev
+    working_dir: /service
+    volumes:
+      - .:/service
+    entrypoint: go run main.go
+    restart: always
+networks:
+  dev:
+    external: true
