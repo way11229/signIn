@@ -4,6 +4,12 @@ import (
 	"context"
 )
 
+const (
+	LINE_METHOD   = "line"
+	FB_METHOD     = "fb"
+	GOOGLE_METHOD = "google"
+)
+
 type AccessData struct {
 	Token string `json:"token"`
 	Extra string `json:"extra"`

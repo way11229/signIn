@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option go_package = "./gateway";
+
+package gateway;
+
+service gateway {
+  rpc SignIn (signInData) returns (Response) {}
+}
+
+// Request
+
+message signInData {
+  string method = 1;
+  string verifyCode = 2;
+  string extra = 3;
+}
+
+// Response
+
+message Response {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+  string phone = 4;
+  string extra = 5;
+}

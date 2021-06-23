@@ -12,32 +12,22 @@
   ],
   "paths": {},
   "definitions": {
-    "googleGoogleResponse": {
+    "gatewayResponse": {
       "type": "object",
       "properties": {
-        "accessToken": {
-          "type": "string"
-        },
-        "accessTokenExpireIn": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "refreshToken": {
-          "type": "string"
-        },
-        "userId": {
+        "id": {
           "type": "string"
         },
         "name": {
           "type": "string"
         },
-        "picture": {
-          "type": "string"
-        },
         "email": {
           "type": "string"
         },
-        "error": {
+        "phone": {
+          "type": "string"
+        },
+        "extra": {
           "type": "string"
         }
       }

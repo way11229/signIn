@@ -1,13 +1,18 @@
 package main
 
 import (
+	"net"
+	"os"
+
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 
 	"signIn/gateway/domain"
 	cors "signIn/gateway/middleware/cors"
 
+	grpcHandler "signIn/gateway/delivery/grpc"
 	httpHandler "signIn/gateway/delivery/http"
 
 	signInService "signIn/gateway/service/signIn"
@@ -18,16 +23,19 @@ import (
 )
 
 const (
+	GATEWAY_PORT        = ":80"
 	GRPC_LINE_CONNECT   = "signIn_line:80"
 	GRPC_FB_CONNECT     = "signIn_fb:80"
 	GRPC_GOOGLE_CONNECT = "signIn_google:80"
 )
 
 func main() {
-	log.Info("Sign in gateway server start")
+	err := godotenv.Load()
+	if err != nil {
+		panic(err)
+	}
 
-	r := gin.Default()
-	r.Use(cors.CORSMiddleWare())
+	log.Info("Sign in gateway server start")
 
 	lineGRPCConn := mGetLineGRPCConn()
 	fbGRPCConn := mGetFbGRPCConn()
@@ -46,9 +54,23 @@ func main() {
 		SignInService: signInService.New(repositoryList),
 	}
 
-	httpHandler.NewHttpHandler(r, serviceList)
+	mode, hasMode := os.LookupEnv("CONNECT_MODE")
+	if hasMode && (mode == "grpc") {
+		lis, listenErr := net.Listen("tcp", GATEWAY_PORT)
+		if listenErr != nil {
+			panic("net listen error")
+		}
+		s := grpc.NewServer()
+		grpcHandler.New(s, serviceList)
 
-	log.Fatal(r.Run(":80"))
+		log.Fatal(s.Serve(lis))
+	} else {
+		r := gin.Default()
+		r.Use(cors.CORSMiddleWare())
+		httpHandler.NewHttpHandler(r, serviceList)
+
+		log.Fatal(r.Run(GATEWAY_PORT))
+	}
 }
 
 func mGetLineGRPCConn() *grpc.ClientConn {

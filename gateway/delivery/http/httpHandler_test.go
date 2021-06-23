@@ -46,7 +46,7 @@ func TestGateway(t *testing.T) {
 	).Return(expectResponseData, nil).Once()
 
 	handler := httpHandler.HttpHandler{
-		SignInWithService: mockSignInService,
+		SignInService: mockSignInService,
 	}
 
 	r.POST("/", handler.Gateway)

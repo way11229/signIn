@@ -9,17 +9,13 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-const LINE_METHOD = "line"
-const FB_METHOD = "fb"
-const GOOGLE_METHOD = "google"
-
 type HttpHandler struct {
-	SignInWithService domain.SignInService
+	SignInService domain.SignInService
 }
 
 func NewHttpHandler(e *gin.Engine, serviceList domain.ServiceList) {
 	handler := &HttpHandler{
-		SignInWithService: serviceList.SignInService,
+		SignInService: serviceList.SignInService,
 	}
 
 	e.POST("/", handler.Gateway)
@@ -46,12 +42,12 @@ func (h *HttpHandler) Gateway(c *gin.Context) {
 	}
 
 	switch method {
-	case LINE_METHOD:
-		signInData, err = h.SignInWithService.SignInWithLine(c, accessData)
-	case FB_METHOD:
-		signInData, err = h.SignInWithService.SignInWithFb(c, accessData)
-	case GOOGLE_METHOD:
-		signInData, err = h.SignInWithService.SignInWithGoogle(c, accessData)
+	case domain.LINE_METHOD:
+		signInData, err = h.SignInService.SignInWithLine(c, accessData)
+	case domain.FB_METHOD:
+		signInData, err = h.SignInService.SignInWithFb(c, accessData)
+	case domain.GOOGLE_METHOD:
+		signInData, err = h.SignInService.SignInWithGoogle(c, accessData)
 	}
 
 	if err != nil {
