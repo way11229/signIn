@@ -6,6 +6,8 @@
 
 使用微服務架構，以traefik做proxy server，串聯所有容器：
 
+![image](https://github.com/way11229/signIn/blob/master/signIn.png)
+
 * frontEnd: 登入按鈕，將使用者導向平台授權，並取得授權碼。
 
   * 所需環境變數：
@@ -91,3 +93,5 @@
 ## 容器架構
 
 參考[bxcodec](https://github.com/bxcodec)的[go-clean-arch](https://github.com/bxcodec/go-clean-arch)
+
+![image](https://github.com/way11229/signIn/blob/master/content.png)
